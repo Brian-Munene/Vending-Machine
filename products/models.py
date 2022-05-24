@@ -5,7 +5,7 @@ import uuid
 class ProductType(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
     name = models.CharField(max_length=255, null=False, blank=False)
-    slug = models.SlugField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True)
 
 
 class Product(models.Model):

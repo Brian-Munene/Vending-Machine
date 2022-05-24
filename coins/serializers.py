@@ -23,3 +23,11 @@ class CoinSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"coin_count": "Coin count cannot be less than 1."})
         return attrs
 
+    def update(self, instance, validated_data):
+        instance.coin_type = validated_data.get('coin_type', instance.coin_type)
+        instance.coin_count = validated_data.get('coin_count', instance.coin_count)
+        instance.save()
+        instance.refresh_from_db()
+
+        return instance
+

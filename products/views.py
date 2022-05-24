@@ -65,7 +65,12 @@ def get_single_product(request, product_id):
 @permission_classes([IsAuthenticated])
 def update_product(request, product_id):
     if request.user.is_staff:
-        product = Product.objects.get(id=product_id)
+        product = Product.objects.filter(id=product_id).first()
+        if not product:
+            return Response({
+                'message': 'Product was not found'
+            }, status=status.HTTP_404_NOT_FOUND)
+
         product_serializer = CreateProductSerializer(instance=product, data=request.data)
         if product_serializer.is_valid():
             _product = product_serializer.save()

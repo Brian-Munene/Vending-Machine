@@ -1,8 +1,5 @@
-from django.shortcuts import render
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from rest_framework import status, exceptions, viewsets
+from rest_framework import status, viewsets
 from .serializers import CreateProductSerializer, ProductSerializer, ProductTypeSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -44,6 +41,7 @@ def create_product(request):
 
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def get_products(request):
     products = Product.objects.all()
     return Response({
@@ -53,6 +51,7 @@ def get_products(request):
 
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def get_single_product(request, product_id):
     product = Product.objects.get(id=product_id)
 

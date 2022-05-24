@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Product, ProductType
 import logging
-from .utils import generate_slug
 
 logger = logging.getLogger('products-logger')
 

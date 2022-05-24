@@ -20,29 +20,65 @@ class ProductTypeViewset(viewsets.ModelViewSet):
     serializer_class = ProductTypeSerializer
 
 
-class CreateProduct(APIView):
-    permission_classes = (AllowAny,)
-    authentication_classes = ()
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_product(request):
+    if request.user.is_staff:
 
-    def get(self, request):
-        return Response({
-            'Message': 'Register a new user'
-        })
-
-    def post(self, request):
-        user_serializer = CreateProductSerializer(data=request.data)
-        if user_serializer.is_valid():
-            user = user_serializer.create()
+        product_serializer = CreateProductSerializer(data=request.data)
+        if product_serializer.is_valid():
+            _product = product_serializer.create()
             response = Response()
-            # response.set_cookie(key='refreshtoken', value=refresh_token, httponly=True)
-            # _user = CustomUser.objects.filter(email=user_serializer.data['email']).first()
-            # response.data = {
-            #     'user': CustomUserSerializer(_user).data,
-            #     'access_token': access_token,
-            #     'success': 'Registration successful'
-            #     }
+            _prod = Product.objects.filter(id=_product.id).first()
+            response.data = {
+                'user': ProductSerializer(_prod).data,
+                'success': 'Product added successfully'
+                }
             return response
         else:
             return Response({
-                'message': user_serializer.errors
+                'message': product_serializer.errors
             }, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({'message': 'You are not authorized to create a product'})
+
+
+@api_view(['GET'])
+def get_products(request):
+    products = Product.objects.all()
+    return Response({
+        "data": ProductSerializer(products, many=True).data,
+        "message": 'Products fetched successfully'
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_single_product(request, product_id):
+    product = Product.objects.get(id=product_id)
+
+    return Response({
+        "data":    ProductSerializer(product).data,
+        "message": 'Product fetched successfully'
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_product(request, product_id):
+    if request.user.is_staff:
+        product = Product.objects.get(id=product_id)
+        product_serializer = CreateProductSerializer(instance=product, data=request.data)
+        if product_serializer.is_valid():
+            _product = product_serializer.save()
+            response = Response()
+            response.data = {
+                'user':    ProductSerializer(product).data,
+                'success': 'Product added successfully'
+            }
+            return response
+    else:
+        return Response({
+            'message': "You are not allowed to modify a product"
+        })
+
+

@@ -1,10 +1,13 @@
 from django.urls import path
 from rest_framework import routers
-from .views import ProductTypeViewset
+from .views import ProductTypeViewset, create_product, get_products, get_single_product, update_product
 
 router = routers.DefaultRouter()
 router.register(r'product/type', ProductTypeViewset, basename='product_type')
 
 urlpatterns = [
-
-              ] + router.urls
+    path('create/product', create_product, name='create_product'),
+    path('products', get_products, name='products'),
+    path('single/product/<product_id>', get_single_product, name="single_product"),
+    path('update/product/<product_id>', update_product, name="updated_product"),
+] + router.urls

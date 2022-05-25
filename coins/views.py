@@ -1,11 +1,13 @@
 from rest_framework.response import Response
 from rest_framework import status, viewsets
-from .serializers import CoinTypeSerializer, CoinSerializer
+from .serializers import CoinTypeSerializer, CoinSerializer, ProductPurchaseSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 import logging
 
 from .models import CoinType, Coins
+from products.models import Product
+from .utils import *
 
 logger = logging.getLogger('coins-logger')
 
@@ -39,7 +41,6 @@ class CoinViewset(viewsets.ModelViewSet):
 def update_coin(request, coin_id):
     if request.user.is_staff:
         coin = Coins.objects.filter(id=coin_id).first()
-        print(coin)
         if not coin:
             return Response({
                 'message': 'Coin was not found'
@@ -58,3 +59,68 @@ def update_coin(request, coin_id):
         return Response({
             'message': "You are not allowed to modify a coin"
         })
+
+
+@api_view(['POST'])
+def purchase_product(request):
+    '''
+    calculates the total amount
+    Checks if amount is >= product price
+    check if user requires a balance
+    check if balance is available
+    Proceed to making a purchase
+
+    '''
+    try:
+        product = Product.objects.filter(id=request.data['product']).first()
+        quantity = request.data['quantity']
+        purchase_coins = request.data['purchase_coins']
+
+        if not product:
+            return Response({
+                'message': 'Product does not exists'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        if product.product_count < quantity:
+            return Response({
+                'message': f'Product is not enough. Only {product.product_count} available.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        total_coins_value = get_total_purchase_coins_value(purchase_coins)
+        logger.info(f'total coins value={total_coins_value}')
+        total_products_value = get_products_value(product.price, quantity)
+        logger.info(f'total_product_value={total_products_value}')
+        if total_products_value > total_coins_value:
+            return Response({
+                'message': 'You do not have enough coins to purchase this product'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        coins_balance = calculate_balance(total_coins_value, total_products_value)
+
+        purchase_balance = get_balance(coins_balance)
+        logger.info(f'purchase_balance- {purchase_balance}')
+
+        logger.info(f'--- Make a purchase ---')
+        make_purchase(product.id, quantity, purchase_coins)
+
+        logger.info('--- Update coins in the vending machine')
+        if purchase_balance == 0:
+            return Response({
+                "message": "Thank you for your purchase",
+                "balance": "Your balance is 0"
+            })
+        for slug in list(purchase_balance):
+            coins = Coins.objects.filter(coin_type__slug=slug).first()
+            if coins.coin_count > 0:
+                coins.coin_count -= int(purchase_balance[slug])
+                coins.save()
+
+        return Response({
+            'message': "Thank you for your purchase",
+            'balance': f'Your balance is {purchase_balance}'
+        })
+
+    except Exception as e:
+        logger.error(f'An error occurred: {str(e)}')
+        return Response({
+            'message': {str(e)}
+        }, status=status.HTTP_400_BAD_REQUEST)
+

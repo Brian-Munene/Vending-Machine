@@ -40,7 +40,7 @@ class CoinViewset(viewsets.ModelViewSet):
 @permission_classes([IsAuthenticated])
 def update_coin(request, coin_id):
     if request.user.is_staff:
-        coin = Coins.objects.filter(id=coin_id).first()
+        coin = Coins.objects.filter(coin_type=coin_id).first()
         if not coin:
             return Response({
                 'message': 'Coin was not found'
@@ -63,15 +63,15 @@ def update_coin(request, coin_id):
 
 @api_view(['POST'])
 def purchase_product(request):
-    '''
+    """
     calculates the total amount
     Checks if amount is >= product price
     check if user requires a balance
     check if balance is available
     Proceed to making a purchase
-
-    '''
+    """
     try:
+        logger.info('*******-- START --*******')
         product = Product.objects.filter(id=request.data['product']).first()
         quantity = request.data['quantity']
         purchase_coins = request.data['purchase_coins']
@@ -80,8 +80,9 @@ def purchase_product(request):
             return Response({
                 'message': 'Product does not exists'
             }, status=status.HTTP_400_BAD_REQUEST)
+        logger.info(f'Product available = {product.product_count}. Requested quantity = {quantity}')
+        if int(product.product_count) - int(quantity) <= 0:
 
-        if product.product_count < quantity:
             return Response({
                 'message': f'Product is not enough. Only {product.product_count} available.'
             }, status=status.HTTP_400_BAD_REQUEST)
@@ -99,14 +100,15 @@ def purchase_product(request):
         logger.info(f'purchase_balance- {purchase_balance}')
 
         logger.info(f'--- Make a purchase ---')
-        make_purchase(product.id, quantity, purchase_coins)
+        make_purchase(product, quantity, purchase_coins)
 
-        logger.info('--- Update coins in the vending machine')
         if purchase_balance == 0:
             return Response({
                 "message": "Thank you for your purchase",
                 "balance": "Your balance is 0"
             })
+
+        logger.info('--- Update coins in the vending machine')
         for slug in list(purchase_balance):
             coins = Coins.objects.filter(coin_type__slug=slug).first()
             if coins.coin_count > 0:
@@ -115,7 +117,7 @@ def purchase_product(request):
 
         return Response({
             'message': "Thank you for your purchase",
-            'balance': f'Your balance is {purchase_balance}'
+            'balance': f'Your coin balance breakdown is as follows: {purchase_balance}'
         })
 
     except Exception as e:
@@ -124,3 +126,13 @@ def purchase_product(request):
             'message': {str(e)}
         }, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def show_available_coins(request):
+    available_coins = get_available_coins()
+    total_change_available, e = is_balance_enough(available_coins, 0)
+    return Response({
+        'available_coins': available_coins,
+        'total_change_amount_available': total_change_available
+    })

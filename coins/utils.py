@@ -43,7 +43,6 @@ def is_balance_enough(coins: dict, balance: float) -> tuple:
     total_coins_value = 0
     for i in coins:
         if i:
-            # print('i', coins[i])
             coin_type = CoinType.objects.filter(slug=i).first()
             total_coins_value += coins[i] * coin_type.value
 
@@ -62,7 +61,8 @@ def get_balance(balance: float):
     available_coins = get_available_coins()
     # print('a_coins', available_coins)
     available_balance, is_enough = is_balance_enough(available_coins, balance)
-    logger.info(f'Available balance {available_balance}')
+    logger.info(f'Available balance: {available_balance}')
+    logger.info(f'Available coins = {available_coins}')
     if is_enough:
         new_balance = balance
         logger.info(f'init_balance: {new_balance}')
@@ -70,15 +70,14 @@ def get_balance(balance: float):
             if float(new_balance) == float(0):
                 return balance_coins
             # TODO figure out why the coin count goes to negative after being updated.
-            logger.info(f'Available coins: {coin_slug}={available_coins[coin_slug]}')
+            logger.info(f'Available {coin_slug} coins ={available_coins[coin_slug]}')
             coin_value = CoinType.objects.get(slug=coin_slug)
             val, mod = divmod(float(new_balance), float(coin_value.value))
             logger.info(f'{coin_slug} count for change= {val}')
             available_coins_after_change = int(available_coins[coin_slug]) - int(val)
             logger.info(f'Available coins after change: {available_coins_after_change}')
+
             if available_coins_after_change < 0:
-                continue
-            elif available_coins_after_change == 0:
                 new_balance = float(new_balance) - float(float(available_coins[coin_slug]) * float(coin_value.value))
                 balance_coins[coin_slug] = available_coins[coin_slug]
             else:
@@ -91,16 +90,17 @@ def get_balance(balance: float):
 
 
 def make_purchase(product, quantity: int, purchase_coins: list):
-    logger.info(f'Purchase coins{purchase_coins}')
-    product_purchase = ProductPurchase.objects.create(
-        product=Product.objects.get(id=product),
-        quantity=quantity
-    )
+    logger.info(f'Purchase coins {purchase_coins}')
+    product_purchase = ProductPurchase()
+    product_purchase.product = product
+    product_purchase.quantity = quantity
+    product_purchase.save()
+
     product_purchase.refresh_from_db()
     for p_coins in purchase_coins:
-        PurchaseCoins.objects.create(
-            coin_count=p_coins['coin_count'],
-            coin_type=CoinType.objects.get(id=p_coins['coin_type']),
-            product_purchase=product_purchase
-        )
+        purchase_coins = PurchaseCoins()
+        purchase_coins.coin_count = p_coins['coin_count']
+        purchase_coins.coin_type = CoinType.objects.get(id=p_coins['coin_type'])
+        purchase_coins.product_purchase = product_purchase
+        purchase_coins.save()
     return

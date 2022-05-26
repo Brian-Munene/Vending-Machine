@@ -86,3 +86,17 @@ def update_product(request, product_id):
         })
 
 
+@api_view(['GET'])
+def get_product_by_type(request):
+    res = {}
+    product_types = ProductType.objects.all()
+    for prod_type in product_types:
+        prods_list = []
+        res[prod_type.name] = prods_list
+        products = Product.objects.filter(product_type=prod_type).values('name', 'price', 'product_count', 'updated_at')
+        for prod in products:
+            prods_list.append(prod)
+    return Response({
+        "data": res
+    })
+

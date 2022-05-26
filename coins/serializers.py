@@ -26,7 +26,8 @@ class CoinSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.coin_type = validated_data.get('coin_type', instance.coin_type)
-        instance.coin_count = validated_data.get('coin_count', instance.coin_count)
+        new_coin_count = instance.coin_count + validated_data['coin_count'] if validated_data['coin_count'] is not None else instance.coin_count
+        instance.coin_count = new_coin_count
         instance.save()
         instance.refresh_from_db()
 

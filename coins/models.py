@@ -11,8 +11,7 @@ class CoinType(models.Model):
 
 
 class Coins(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
-    coin_type = models.ForeignKey(CoinType, related_name='coins', on_delete=models.PROTECT)
+    coin_type = models.OneToOneField(CoinType, on_delete=models.PROTECT, primary_key=True)
     coin_count = models.IntegerField(default=0, null=False, blank=False)
 
 

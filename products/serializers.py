@@ -45,7 +45,8 @@ class CreateProductSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
         instance.price = validated_data.get('price', instance.price)
-        instance.product_count = validated_data.get('product_count', instance.product_count)
+        new_product_count = validated_data['product_count'] + instance.product_count if validated_data['product_count'] is not None else instance.product_count
+        instance.product_count = new_product_count
         instance.product_type = validated_data.get('product_type', instance.product_type)
         instance.save()
         instance.refresh_from_db()

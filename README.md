@@ -61,3 +61,15 @@ Run the following command to run the project.
 
 Congratulations. You have successfully run the Vending Machine project.
 
+## How to Test
+
+To test the vending machine application you have an option of two API documentation.
+
+### 1. Swagger Documentation
+
+To view the swagger documentation navigate to ``http://127.0.0.1:8000/docs/``
+
+### 2. Redoc Documentation
+
+To view the redoc documentation navigate to ``http://127.0.0.1:8000/redocs/``
+

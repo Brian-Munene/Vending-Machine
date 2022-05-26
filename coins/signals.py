@@ -32,5 +32,3 @@ def update_coin_count(sender, instance, created, **kwargs):
         if coin:
             coin.coin_count = int(coin.coin_count) + int(instance.coin_count)
             coin.save()
-
-

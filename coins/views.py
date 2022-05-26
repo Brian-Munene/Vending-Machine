@@ -135,4 +135,31 @@ def show_available_coins(request):
     return Response({
         'available_coins': available_coins,
         'total_change_amount_available': total_change_available
-    })
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def withdraw_coins(request):
+    coins = Coins.objects.filter(coin_type=request.data['coin_type']).first()
+    if not coins:
+        return Response({
+            'message': "Coin type was not found"
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    new_coin_count = int(coins.coin_count) - int(request.data['coin_count'])
+
+    if new_coin_count < 0:
+        return Response({
+            "message": f"Not enough coins for the withdrawal request. Available coins are {coins.coin_count}"
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    coins.coin_count = new_coin_count
+    coins.save()
+
+    return Response({
+        "message": 'Your withdrawal was successful',
+        "data": CoinSerializer(coins).data
+    }, status=status.HTTP_200_OK)
+
+

@@ -63,13 +63,7 @@ Congratulations. You have successfully run the Vending Machine project.
 
 ## How to Test
 
-To test the vending machine application you have an option of two API documentation.
+To test the application navigate to the docs folder. There you will find a JSON file with sample requests that can be used to test the application.
 
-### 1. Swagger Documentation
-
-To view the swagger documentation navigate to ``http://127.0.0.1:8000/docs/``
-
-### 2. Redoc Documentation
-
-To view the redoc documentation navigate to ``http://127.0.0.1:8000/redocs/``
+You can import the JSON file into postman to create a new collection.
 

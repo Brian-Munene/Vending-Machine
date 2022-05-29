@@ -59,7 +59,7 @@ class ProductPurchaseSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self):
-        print('v', self.validated_data)
+
         purchase_instance = ProductPurchase.objects.create(**self.validated_data)
         purchase_instance.save()
         purchase_instance.refresh_from_db()

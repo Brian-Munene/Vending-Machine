@@ -85,8 +85,12 @@ def get_balance(balance: float):
                 balance_coins[coin_slug] = val
             logger.info(f'Final balance{new_balance}')
             logger.info(f'v {float(new_balance) / float(coin_value.value) == float(0)}')
+
+        if float(new_balance) != float(0):
+            raise Exception('Not enough coin change to make make the purchase')
     else:
         raise Exception('Change is not enough for this purchase')
+    return balance_coins
 
 
 def make_purchase(product, quantity: int, purchase_coins: list):

@@ -13,7 +13,7 @@ environ.Env.read_env()
 def generate_access_token(user):
 
     access_token_payload = {
-        'user_id': str(user.public_id),
+        'id': str(user.id),
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=5, minutes=5),
         'iat': datetime.datetime.utcnow(),
     }
@@ -24,7 +24,7 @@ def generate_access_token(user):
 
 def generate_refresh_token(user):
     refresh_token_payload = {
-        'user_id': str(user.public_id),
+        'id': str(user.id),
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7),
         'iat': datetime.datetime.utcnow()
     }
@@ -43,12 +43,12 @@ class JWTAuthentication(BaseAuthentication):
 
     def authenticate(self, request):
 
-        authorization_heaader = request.headers.get('Authorization')
+        authorization_header = request.headers.get('Authorization')
 
-        if not authorization_heaader:
+        if not authorization_header:
             return None
         try:
-            access_token = authorization_heaader.split(' ')[1]
+            access_token = authorization_header.split(' ')[1]
             payload = jwt.decode(
                 access_token, env('SECRET_KEY'), algorithms=['HS256'])
 
@@ -57,7 +57,7 @@ class JWTAuthentication(BaseAuthentication):
         except IndexError:
             raise exceptions.AuthenticationFailed('Token prefix missing')
 
-        user = CustomUser.objects.filter(public_id=payload['user_id']).first()
+        user = CustomUser.objects.filter(id=payload['id']).first()
         if user is None:
             raise exceptions.AuthenticationFailed('User not found')
 

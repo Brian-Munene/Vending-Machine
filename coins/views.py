@@ -2,7 +2,8 @@ from rest_framework.response import Response
 from rest_framework import status, viewsets
 from .serializers import CoinTypeSerializer, CoinSerializer, ProductPurchaseSerializer
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework import mixins
 import logging
 
 from .models import CoinType, Coins
@@ -13,19 +14,19 @@ logger = logging.getLogger('coins-logger')
 
 
 class CoinTypeViewset(viewsets.ModelViewSet):
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAdminUser, ]
     queryset = CoinType.objects.all()
     serializer_class = CoinTypeSerializer
 
     def get_permissions(self):
         """Set custom permissions for each action."""
         if self.action in ['update', 'partial_update', 'destroy', 'list', 'create']:
-            self.permission_classes = [IsAuthenticated, ]
+            self.permission_classes = [IsAdminUser, ]
         return super().get_permissions()
 
 
-class CoinViewset(viewsets.ModelViewSet):
-    permission_classes = [AllowAny, ]
+class CoinViewset(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    permission_classes = [IsAdminUser, ]
     queryset = Coins.objects.all()
     serializer_class = CoinSerializer
 
@@ -37,7 +38,7 @@ class CoinViewset(viewsets.ModelViewSet):
 
 
 @api_view(['PUT'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAdminUser])
 def update_coin(request, coin_id):
     if request.user.is_staff:
         coin = Coins.objects.filter(coin_type=coin_id).first()
@@ -55,6 +56,10 @@ def update_coin(request, coin_id):
                 'success': 'Coin updated successfully'
             }
             return response
+        else:
+            return Response({
+                'message': coin_serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({
             'message': "You are not allowed to modify a coin"
@@ -109,11 +114,13 @@ def purchase_product(request):
             })
 
         logger.info('--- Update coins in the vending machine')
+
         for slug in list(purchase_balance):
             coins = Coins.objects.filter(coin_type__slug=slug).first()
-            if coins.coin_count > 0:
-                coins.coin_count -= int(purchase_balance[slug])
-                coins.save()
+            if coins:
+                if coins.coin_count > 0:
+                    coins.coin_count -= int(purchase_balance[slug])
+                    coins.save()
 
         return Response({
             'message': "Thank you for your purchase",
@@ -128,7 +135,7 @@ def purchase_product(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAdminUser])
 def show_available_coins(request):
     available_coins = get_available_coins()
     total_change_available, e = is_balance_enough(available_coins, 0)
@@ -139,7 +146,7 @@ def show_available_coins(request):
 
 
 @api_view(['PUT'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAdminUser])
 def withdraw_coins(request):
     coins = Coins.objects.filter(coin_type=request.data['coin_type']).first()
     if not coins:

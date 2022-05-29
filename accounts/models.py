@@ -8,7 +8,7 @@ import uuid
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    public_id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     username = models.CharField(_("username"),
                                 max_length=150,
                                 unique=True,

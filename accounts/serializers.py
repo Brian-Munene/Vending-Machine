@@ -34,7 +34,7 @@ class RegisterCustomUserSerializer(serializers.ModelSerializer):
         user.set_password(self.validated_data['password'])
         user.save()
 
-        logger.info(f'User {user.public_id} has been saved to the database')
+        logger.info(f'User {user.id} has been saved to the database')
         user.refresh_from_db()
 
         return user
@@ -44,3 +44,10 @@ class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['username', 'first_name', 'last_name', 'email']
+
+
+class LoginUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'password']

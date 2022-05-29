@@ -1,0 +1,740 @@
+{
+	"info": {
+		"_postman_id": "8482f5cf-2045-4803-b513-e1d21480d2a5",
+		"name": "Vending Machine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8647260"
+	},
+	"item": [
+		{
+			"name": "Register a User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjdiZGI2NWZhLTc2NzMtNGI3YS05MWEwLTQ4MjYwNzJhMzZjOSIsImV4cCI6MTY1NDI1MjE1MCwiaWF0IjoxNjUzODE5ODUwfQ.SmE3AEHWP4y5BmDWGvUI77Jlv1TvAGwffmLO_Yg0T7A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"Patrick\",\n    \"last_name\": \"Pat\",\n    \"email\": \"pat@example.com\",\n    \"username\": \"Pat\",\n    \"password\": \"secretkey\",\n    \"confirm_password\": \"secretkey\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/accounts/register",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"accounts",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"Faith\",\n    \"password\": \"secretkey\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/accounts/login",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"accounts",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make user a maintainer",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjdiZGI2NWZhLTc2NzMtNGI3YS05MWEwLTQ4MjYwNzJhMzZjOSIsImV4cCI6MTY1NDI1MjE1MCwiaWF0IjoxNjUzODE5ODUwfQ.SmE3AEHWP4y5BmDWGvUI77Jlv1TvAGwffmLO_Yg0T7A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": \"ce747b36-5b9d-4b5c-bcfe-e4c2d8e59c94\",\n    \"is_staff\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/accounts/make/maintainer",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"accounts",
+						"make",
+						"maintainer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Coin Type",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImNlNzQ3YjM2LTViOWQtNGI1Yy1iY2ZlLWU0YzJkOGU1OWM5NCIsImV4cCI6MTY1NDI1Mzc5NSwiaWF0IjoxNjUzODIxNDk1fQ.op5rqjfzkEDVXx5UfzR0J6_q7rWnEeMK7eapzMp3vTI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Ten shillings\",\n  \"value\": 10.0,\n  \"slug\": \"ten_shillings\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/coins/coin/type/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"coins",
+						"coin",
+						"type",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get coin types",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImNlNzQ3YjM2LTViOWQtNGI1Yy1iY2ZlLWU0YzJkOGU1OWM5NCIsImV4cCI6MTY1NDI1Mzc5NSwiaWF0IjoxNjUzODIxNDk1fQ.op5rqjfzkEDVXx5UfzR0J6_q7rWnEeMK7eapzMp3vTI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/coins/coin/type/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"coins",
+						"coin",
+						"type",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete coin type",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImNlNzQ3YjM2LTViOWQtNGI1Yy1iY2ZlLWU0YzJkOGU1OWM5NCIsImV4cCI6MTY1NDI1Mzc5NSwiaWF0IjoxNjUzODIxNDk1fQ.op5rqjfzkEDVXx5UfzR0J6_q7rWnEeMK7eapzMp3vTI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/coins/coin/type/b8404ae7-7dfb-456f-a702-33f2ada35842/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"coins",
+						"coin",
+						"type",
+						"b8404ae7-7dfb-456f-a702-33f2ada35842",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create coins",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImNlNzQ3YjM2LTViOWQtNGI1Yy1iY2ZlLWU0YzJkOGU1OWM5NCIsImV4cCI6MTY1NDI1Mzc5NSwiaWF0IjoxNjUzODIxNDk1fQ.op5rqjfzkEDVXx5UfzR0J6_q7rWnEeMK7eapzMp3vTI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"coin_type\": \"a48ac81a-17f9-4ba4-99fe-2e2ccd4fcac4\",\n    \"coin_count\": 100\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/coins/coins/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"coins",
+						"coins",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit Coin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImNlNzQ3YjM2LTViOWQtNGI1Yy1iY2ZlLWU0YzJkOGU1OWM5NCIsImV4cCI6MTY1NDI1Mzc5NSwiaWF0IjoxNjUzODIxNDk1fQ.op5rqjfzkEDVXx5UfzR0J6_q7rWnEeMK7eapzMp3vTI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"coin_type\": \"a48ac81a-17f9-4ba4-99fe-2e2ccd4fcac4\",\n    \"coin_count\": 10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/coins/deposit/coin/a48ac81a-17f9-4ba4-99fe-2e2ccd4fcac4",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"coins",
+						"deposit",
+						"coin",
+						"a48ac81a-17f9-4ba4-99fe-2e2ccd4fcac4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Withdraw Coins",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImNlNzQ3YjM2LTViOWQtNGI1Yy1iY2ZlLWU0YzJkOGU1OWM5NCIsImV4cCI6MTY1NDI1Mzc5NSwiaWF0IjoxNjUzODIxNDk1fQ.op5rqjfzkEDVXx5UfzR0J6_q7rWnEeMK7eapzMp3vTI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"coin_type\": \"a48ac81a-17f9-4ba4-99fe-2e2ccd4fcac4\",\n    \"coin_count\": 12\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/coins/withdraw/coins",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"coins",
+						"withdraw",
+						"coins"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show available coins",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImNlNzQ3YjM2LTViOWQtNGI1Yy1iY2ZlLWU0YzJkOGU1OWM5NCIsImV4cCI6MTY1NDI1Mzc5NSwiaWF0IjoxNjUzODIxNDk1fQ.op5rqjfzkEDVXx5UfzR0J6_q7rWnEeMK7eapzMp3vTI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/coins/show/available/coins",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"coins",
+						"show",
+						"available",
+						"coins"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add product type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Beverage drinks\",\n    \"slug\": \"beverage_drinks\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/products/product/type/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"product",
+						"type",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Product Types",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/products/product/type/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"product",
+						"type",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product Types",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Beverages\",\n    \"slug\": \"beverage_drinks\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/products/product/type/4ea484fd-7266-4aa6-a9b2-7c85582d32c2/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"product",
+						"type",
+						"4ea484fd-7266-4aa6-a9b2-7c85582d32c2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/products/product/type/baf9e8e8-0b5d-4af8-808a-a5af2225905d/",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/products/product/type/baf9e8e8-0b5d-4af8-808a-a5af2225905d/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"product",
+						"type",
+						"baf9e8e8-0b5d-4af8-808a-a5af2225905d",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImNlNzQ3YjM2LTViOWQtNGI1Yy1iY2ZlLWU0YzJkOGU1OWM5NCIsImV4cCI6MTY1NDI1Mzc5NSwiaWF0IjoxNjUzODIxNDk1fQ.op5rqjfzkEDVXx5UfzR0J6_q7rWnEeMK7eapzMp3vTI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Cocacola\",\n    \"price\": 12.0,\n    \"product_count\": 120,\n    \"product_type\": \"09b00071-834c-41ea-b16d-407a35b0b191\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/products/create/product",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"create",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/products/products",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single Product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/products/single/product/e74998ba-502f-4152-b5f9-22645af36fca",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"single",
+						"product",
+						"e74998ba-502f-4152-b5f9-22645af36fca"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImNlNzQ3YjM2LTViOWQtNGI1Yy1iY2ZlLWU0YzJkOGU1OWM5NCIsImV4cCI6MTY1NDI1Mzc5NSwiaWF0IjoxNjUzODIxNDk1fQ.op5rqjfzkEDVXx5UfzR0J6_q7rWnEeMK7eapzMp3vTI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Cocacola\",\n    \"price\": 13.0,\n    \"product_count\": 120\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/products/update/product/e74998ba-502f-4152-b5f9-22645af36fca",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"update",
+						"product",
+						"e74998ba-502f-4152-b5f9-22645af36fca"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get  product by type",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/products/product/type/products",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"product",
+						"type",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Purchase a product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"product\": \"e74998ba-502f-4152-b5f9-22645af36fca\",\n    \"quantity\": 2,\n    \"purchase_coins\": [\n        {\n            \"coin_type\": \"f34ce6b9-0336-4fd4-b216-bbd26d87b5ee\",\n            \"coin_count\": 10\n        },\n        {\n            \"coin_type\": \"a48ac81a-17f9-4ba4-99fe-2e2ccd4fcac4\",\n            \"coin_count\": 12\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/coins/purchase/product",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"coins",
+						"purchase",
+						"product"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

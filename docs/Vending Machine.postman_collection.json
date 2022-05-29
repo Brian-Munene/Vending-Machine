@@ -687,7 +687,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"product\": \"e74998ba-502f-4152-b5f9-22645af36fca\",\n    \"quantity\": 2,\n    \"purchase_coins\": [\n        {\n            \"coin_type\": \"f34ce6b9-0336-4fd4-b216-bbd26d87b5ee\",\n            \"coin_count\": 10\n        },\n        {\n            \"coin_type\": \"a48ac81a-17f9-4ba4-99fe-2e2ccd4fcac4\",\n            \"coin_count\": 12\n        }\n    ]\n}",
+					"raw": "{\n    \"product\": \"e74998ba-502f-4152-b5f9-22645af36fca\",\n    \"quantity\": 1,\n    \"purchase_coins\": [\n        {\n            \"coin_type\": \"f34ce6b9-0336-4fd4-b216-bbd26d87b5ee\",\n            \"coin_count\": 10\n        },\n        {\n            \"coin_type\": \"a48ac81a-17f9-4ba4-99fe-2e2ccd4fcac4\",\n            \"coin_count\": 12\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
